@@ -11,15 +11,14 @@
 //import javax.mail.PasswordAuthentication;
 //import javax.mail.Session;
 //import javax.mail.Transport;
-//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.InternetAddress; 
 //import javax.mail.internet.MimeBodyPart;
 //import javax.mail.internet.MimeMessage;
 //import javax.mail.internet.MimeMultipart;
+//import javax.servlet.ServletContext;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.core.env.Environment;
-//import org.springframework.stereotype.Component;
 //import org.springframework.stereotype.Service;
 //import org.thymeleaf.TemplateEngine;
 //import org.thymeleaf.context.Context;

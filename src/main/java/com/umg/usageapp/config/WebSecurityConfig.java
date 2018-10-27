@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.umg.usageapp.auth.RestAuthenticationEntryPoint;
@@ -22,14 +23,21 @@ import com.umg.usageapp.auth.TokenAuthenticationFilter;
 import com.umg.usageapp.security.TokenHelper;
 import com.umg.usageapp.servicesimpl.CustomUserDetailsService;
 
-/**
- * Created by fan.jin on 2016-10-19.
- */
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	
+	private static final String[] AUTH_LIST = {
+	        // -- swagger ui
+	        "**/swagger-resources/**",
+	        "/swagger-ui.html/**",
+	        "/swagger-ui.html/**",
+	        "/v2/api-docs",
+	        "/webjars/**"
+	};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -75,30 +83,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/empresa/**").permitAll()
+                .antMatchers(AUTH_LIST).permitAll()
                 .anyRequest().authenticated().and()
-                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
-
-        http.csrf().disable();
+                .httpBasic().authenticationEntryPoint(swaggerAuthenticationEntryPoint())
+                .and()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class)
+                .csrf().disable();
     }
 
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        // TokenAuthenticationFilter will ignore the below paths
-        web.ignoring().antMatchers(
-                HttpMethod.POST,
-                "/auth/login"
-        );
-        web.ignoring().antMatchers(
-                HttpMethod.GET,
-                "/",
-                "/webjars/**",
-                "/*.html",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js"
-            );
-
+    @Bean
+    public BasicAuthenticationEntryPoint swaggerAuthenticationEntryPoint() {
+        BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
+        entryPoint.setRealmName("Swagger Realm");
+        return entryPoint;
     }
+
 }

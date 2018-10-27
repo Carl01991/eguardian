@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +14,7 @@ import com.umg.usageapp.models.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Random;
 
 
 /**
@@ -82,7 +82,7 @@ public class TokenHelper {
         return audience;
     }
 
-    public String refreshToken(String token, Device device) {
+    public String refreshToken(String token) {
         String refreshedToken;
         Date a = timeProvider.now();
         try {
@@ -90,7 +90,7 @@ public class TokenHelper {
             claims.setIssuedAt(a);
             refreshedToken = Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(generateExpirationDate(device))
+                .setExpiration(generateExpirationDate())
                 .signWith( SIGNATURE_ALGORITHM, SECRET )
                 .compact();
         } catch (Exception e) {
@@ -99,27 +99,22 @@ public class TokenHelper {
         return refreshedToken;
     }
 
-    public String generateToken(String username, Device device) {
-        String audience = generateAudience(device);
+    public String generateToken(String username) {
+        String audience = generateAudience();
         return Jwts.builder()
                 .setIssuer( APP_NAME )
                 .setSubject(username)
                 .setAudience(audience)
                 .setIssuedAt(timeProvider.now())
-                .setExpiration(generateExpirationDate(device))
+                .setExpiration(generateExpirationDate())
                 .signWith( SIGNATURE_ALGORITHM, SECRET )
                 .compact();
     }
 
-    private String generateAudience(Device device) {
+    private String generateAudience() {
         String audience = AUDIENCE_UNKNOWN;
-        if (device.isNormal()) {
-            audience = AUDIENCE_WEB;
-        } else if (device.isTablet()) {
-            audience = AUDIENCE_TABLET;
-        } else if (device.isMobile()) {
-            audience = AUDIENCE_MOBILE;
-        }
+        audience = AUDIENCE_WEB;
+     
         return audience;
     }
 
@@ -136,13 +131,13 @@ public class TokenHelper {
         return claims;
     }
 
-    private Date generateExpirationDate(Device device) {
-        long expiresIn = device.isTablet() || device.isMobile() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
+    private Date generateExpirationDate() {
+        long expiresIn = new Random().nextLong();
         return new Date(timeProvider.now().getTime() + expiresIn * 1000);
     }
 
-    public int getExpiredIn(Device device) {
-        return device.isMobile() || device.isTablet() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
+    public int getExpiredIn() {
+        return   EXPIRES_IN;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
