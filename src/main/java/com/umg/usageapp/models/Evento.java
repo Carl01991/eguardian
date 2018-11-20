@@ -34,7 +34,10 @@ public class Evento {
 	@JoinColumn(name = "id_estatus")
 	@JsonBackReference
 	private Estatus estatus;
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_empresa")
+	@JsonBackReference
+	private Empresa empresa;
 	
 	public int getIdEvento() {
 		return idEvento;
@@ -72,7 +75,19 @@ public class Evento {
 	public void setEstatus(Estatus estatus) {
 		this.estatus = estatus;
 	}
-	public Evento(int idEvento, String nombre, Date fechaInicio, String duracion, Date fechaFin, Estatus estatus) {
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+	@Override
+	public String toString() {
+		return "Evento [idEvento=" + idEvento + ", nombre=" + nombre + ", fechaInicio=" + fechaInicio + ", duracion="
+				+ duracion + ", fechaFin=" + fechaFin + ", estatus=" + estatus + ", empresa=" + empresa + "]";
+	}
+	public Evento(int idEvento, String nombre, Date fechaInicio, String duracion, Date fechaFin, Estatus estatus,
+			Empresa empresa) {
 		super();
 		this.idEvento = idEvento;
 		this.nombre = nombre;
@@ -80,11 +95,18 @@ public class Evento {
 		this.duracion = duracion;
 		this.fechaFin = fechaFin;
 		this.estatus = estatus;
+		this.empresa = empresa;
 	}
 	public Evento() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
+	
+	
+	
+	
 
 	
 	

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         return u;
     }
 
-    public User findById( Long id ) throws AccessDeniedException {
+    public User findById( Long id )  {
         User u = userRepository.getOne(id);
         return u;
     }
@@ -36,4 +36,9 @@ public class UserServiceImpl implements UserService {
         List<User> result = userRepository.findAll();
         return result;
     }
+
+	@Override
+	public User createUser(User user) {
+		return userRepository.save(user);
+	}
 }

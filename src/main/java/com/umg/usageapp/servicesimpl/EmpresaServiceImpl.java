@@ -10,12 +10,12 @@ import com.umg.usageapp.services.EmpresaService;
 @Service
 public class EmpresaServiceImpl implements EmpresaService {
 	
-	@Autowired
+	@Autowired 
 	EmpresaRepository empresaRepository;
 
 	@Override
-	public Empresa findById(Integer id) {
-		Empresa empresa = empresaRepository.getOne(id);
+	public Empresa getEmpresaById(Integer id) {
+		Empresa empresa = empresaRepository.getEmpresaById(id);
 		return empresa;
 	}
 
@@ -35,6 +35,14 @@ public class EmpresaServiceImpl implements EmpresaService {
 		Empresa empresaold = empresaRepository.getOne(empresa.getId());
 		empresaold = empresa;
 		return empresa;
+	}
+
+	@Override
+	public String findByName(String name) {
+		Empresa empresa = empresaRepository.getEmpresaByName(name);
+		
+		
+		return empresa.getNombre();
 	}
 
 }

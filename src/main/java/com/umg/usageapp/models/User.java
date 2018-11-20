@@ -1,5 +1,6 @@
 package com.umg.usageapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
  * Created by fan.jin on 2016-10-15.
  */
 
+@Transactional
 @Entity
 @Table(name="USERS")
 public class User implements UserDetails {
@@ -48,6 +53,10 @@ public class User implements UserDetails {
 
     @Column(name = "email")
     private String email;
+    
+    @Column(name = "genero")
+    private String genero;
+  
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -57,6 +66,11 @@ public class User implements UserDetails {
 
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
+    
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_estatus")
+	@JsonBackReference
+	private Estatus estatus;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -166,4 +180,22 @@ public class User implements UserDetails {
         return true;
     }
 
+	public Estatus getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(Estatus estatus) {
+		this.estatus = estatus;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+    
+    
 }

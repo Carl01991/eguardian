@@ -28,7 +28,7 @@ public class Puesto {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario")
 	@JsonBackReference
-	private Usuarios usuarios;
+	private User usuarios;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_empresa")
 	@JsonBackReference
@@ -38,10 +38,9 @@ public class Puesto {
 	@JsonBackReference
 	private Departamento departamento;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_role")
+	@JoinColumn(name = "id_catalogo_puestos")
 	@JsonBackReference
-	private Role role;
-	
+	private CatalogoPuestos catalogoPuestos;	
 	
 	public int getIdPuesto() {
 		return idPuesto;
@@ -55,12 +54,7 @@ public class Puesto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public Usuarios getUsuarios() {
-		return usuarios;
-	}
-	public void setUsuarios(Usuarios usuarios) {
-		this.usuarios = usuarios;
-	}
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -73,26 +67,36 @@ public class Puesto {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
-	public Role getRole() {
-		return role;
+
+	
+	public CatalogoPuestos getCatalogoPuestos() {
+		return catalogoPuestos;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+	public void setCatalogoPuestos(CatalogoPuestos catalogoPuestos) {
+		this.catalogoPuestos = catalogoPuestos;
 	}
-	public Puesto(int idPuesto, String nombre, Usuarios usuarios, Empresa empresa, Departamento departamento,
-			Role role) {
+	public User getUsuarios() {
+		return usuarios;
+	}
+	public void setUsuarios(User usuarios) {
+		this.usuarios = usuarios;
+	}
+	public Puesto(int idPuesto, String nombre, User usuarios, Empresa empresa, Departamento departamento,
+			CatalogoPuestos catalogoPuestos) {
 		super();
 		this.idPuesto = idPuesto;
 		this.nombre = nombre;
 		this.usuarios = usuarios;
 		this.empresa = empresa;
 		this.departamento = departamento;
-		this.role = role;
+		this.catalogoPuestos = catalogoPuestos;
 	}
 	public Puesto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+
 	
 	
 	

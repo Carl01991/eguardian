@@ -31,7 +31,7 @@ public class Asistentes {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario")
 	@JsonBackReference
-	private Usuarios usuario;
+	private User usuario;
 	
 	
 	public int getIdAsistente() {
@@ -58,13 +58,23 @@ public class Asistentes {
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-	public Usuarios getUsuario() {
+
+	public User getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(Usuarios usuario) {
+	public void setUsuario(User usuario) {
 		this.usuario = usuario;
 	}
-	public Asistentes(int idAsistente, String numeroTelefono, String imei, Evento evento, Usuarios usuario) {
+	public Asistentes() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Asistentes [idAsistente=" + idAsistente + ", numeroTelefono=" + numeroTelefono + ", Imei=" + Imei
+				+ ", evento=" + evento + ", usuario=" + usuario + "]";
+	}
+	public Asistentes(int idAsistente, String numeroTelefono, String imei, Evento evento, User usuario) {
 		super();
 		this.idAsistente = idAsistente;
 		this.numeroTelefono = numeroTelefono;
@@ -72,10 +82,9 @@ public class Asistentes {
 		this.evento = evento;
 		this.usuario = usuario;
 	}
-	public Asistentes() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
+	
+	
 	
 	
 

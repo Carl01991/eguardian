@@ -6,8 +6,10 @@ import com.umg.usageapp.models.Empresa;
 
 public interface EmpresaService {
 	
-	Empresa findById(Integer id);
+	Empresa getEmpresaById(Integer id);
+	String findByName(String name);
 	Empresa findUseradmin(Integer idEmpresa);
 	Empresa createEmpresa(Empresa empresa);
 	Empresa updateEmpresa(Empresa empresa);
+	
 }

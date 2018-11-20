@@ -68,4 +68,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.save(user);
 
     }
+    
+    
+    public void resetPassword(User usuario) {
+  
+    	User user = userRepository.findByUsername(usuario.getUsername());
+        user.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        userRepository.save(user);
+
+    }
+
+    
 }

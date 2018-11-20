@@ -73,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         HttpMethod.GET,
-                        "/",
+                        "/**",
                         "/auth/**",
                         "/webjars/**",
                         "/*.html",
@@ -84,7 +84,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/empresa/**").permitAll()
-                .antMatchers(AUTH_LIST).permitAll()
+                .antMatchers("/registro/**").permitAll()
+                .antMatchers("auth/resetpassword").permitAll()
+                .antMatchers("auth/validar_Token").permitAll()
+                .antMatchers("/confirmarCorreo").permitAll()  
+                .antMatchers(AUTH_LIST).permitAll() 
                 .anyRequest().authenticated().and()
                 .httpBasic().authenticationEntryPoint(swaggerAuthenticationEntryPoint())
                 .and()
